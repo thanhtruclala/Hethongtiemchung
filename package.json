@@ -1,0 +1,22 @@
+{
+  "name": "Nienluan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx pm2 start server.js --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12",
+    "pm2": "^5.1.2",
+    "web3": "^1.6.0",
+    "web3.js-browser": "^0.2.0"
+  }
+}

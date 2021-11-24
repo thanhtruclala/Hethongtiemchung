@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="http://localhost:3000" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./process.js"></script>
+    <script src="./scripts/web3.js"></script>
+    <script src="https://kit.fontawesome.com/1260a7fe37.js" crossorigin="anonymous"></script>    <title>Hệ thống thông tin tiêm chủng</title>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+body{
+  overflow: hidden;
+  padding: 0 20px;
+  background: #17a2b8;
+}
+::selection{
+  background: rgba(23,162,184,0.3);
+}
+.wrapper{
+  max-width: 700px;
+  width: auto;
+  margin: 200px auto;
+  padding: 25px 30px 30px 30px;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.1);
+}
+.wrapper header{
+  font-size: 30px;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+.wrapper nav{
+  position: relative;
+  width: 80%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.wrapper nav label{
+  display: block;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  color: #17a2b8;
+  font-size: 17px;
+  border-radius: 5px;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+.wrapper nav label:hover{
+  background: rgba(23,162,184,0.3);
+}
+#home:checked ~ nav label.home,
+#blog:checked ~ nav label.blog,
+#code:checked ~ nav label.code,
+#help:checked ~ nav label.help,
+  #about:checked ~ nav label.about{
+  color: #fff;
+}
+nav label i{
+  padding-right: 7px;
+}
+nav .slider{
+  position: absolute;
+  height: 100%;
+  width: 33%;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+  border-radius: 5px;
+  background: #17a2b8;
+  transition: all 0.3s ease;
+}
+input[type="radio"]{
+  display: none;
+}
+#blog:checked ~ nav .slider{
+  left: 33%;
+}
+#code:checked ~ nav .slider{
+  left: 67%;
+}
+#help:checked ~ nav .slider{
+  left: 60%;
+}
+#about:checked ~ nav .slider{
+  left: 80%;
+}
+section .content{
+  display: none;
+  background: #fff;
+}
+#home:checked ~ section .content-1,
+#blog:checked ~ section .content-2,
+#code:checked ~ section .content-3,
+#help:checked ~ section .content-4,
+#about:checked ~ section .content-5{
+  display: block;
+}
+section .content .title{
+  font-size: 25px;
+  font-weight: 500;
+  margin: 30px 0 10px 0;
+}
+section .content p{
+text-align: justify;
+}
+#buttontable > input  {
+    align-items: center;
+}
+#formDangky .detail {
+    font-weight: 500;
+}
+#formDangky {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#formDangky .input-box input{
+    height: 35px;
+    width: 100%;
+}
+#formDangky .input-box {
+    height: 60px;
+    font-weight: 500;
+    width: 45%;
+}
+#formDangky input[type="radio"]{
+    display: inline;
+    width: 14px;
+    height: 14px;
+}
+.sex {
+    height: 35%;
+    margin-top: 10px;
+    text-align: left;
+}
+.sex>label {
+    margin:0 15% 0 0;
+    font-size: 18px;
+}
+.sex>input {
+    align-items: center;
+}
+i {
+    height: 100%;
+}
+#buttontable{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.button-submit {
+    width: 45%;
+    height: 150%
+}
+.button-submit input {
+    margin: 0 30% 0 3%;
+}
+#tableSearch,th,td{
+    border: 2px solid black;
+    text-align: center;
+}
+#tableSearch {
+    border-collapse: collapse;
+    width: 100%
+}
+th {
+    background-color: lightpink;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, .4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal b {
+    color: red;
+}
+</style>
+<body>
+   <div class="wrapper">
+        <header>Hệ thống thông tin tiêm chủng</header>
+        <input type="radio" name="slider" checked id="home">
+        <input type="radio" name="slider" id="blog">
+        <input type="radio" name="slider" id="code">
+        <input type="radio" name="slider" id="help">
+        <input type="radio" name="slider" id="about">
+        <nav>
+          <label for="home" class="home"><i class="fas fa-search"></i>Tra cứu</label>
+          <label for="blog" class="blog"><i class="fas fa-user"></i>Đăng ký</label>
+          <label for="code" class="code"><i class="fas fa-user-cog"></i>Nhập liệu</label>
+        <div class="slider"></div>
+        </nav>
+        <section>
+          <div class="content content-1">
+            <div class="title">Tra cứu thông tin tiêm chủng</div>
+                <form>
+                    <div>
+                        <label for="namesearch">Nhập CCCD: </label>
+                        <input type="text" id="namesearch" maxlength="12" minlength="9" placeholder="9/12 số!">
+                        <input type="button" id="submitsearch" value="Tìm kiếm">
+                    </div>    
+                </form></br>
+                <table id=tableSearch>
+                    <tr>
+                        <th>Họ và tên</th>
+                        <th>Ngày sinh</th>
+                        <th>Giới tính</th>
+                        <th>Địa chỉ</th>
+                        <th>Mũi tiêm 1</th>
+                        <th>Mũi tiêm 2</th>
+                    </tr>
+                    <tr id=updatesearch>
+                        <td colspan="6">Nhập thông tin tìm kiếm công dân</td>
+                    </tr>
+                    <tr id=updatesearch1></tr>
+                </table>
+                    
+            </div>
+          <div class="content content-2">
+            <div class="title">Đăng ký thông tin cá nhân</div>
+                <form id="formDangky">
+                        <div class="input-box">
+                            <span class="detail">Họ và tên</span>
+                            <input type=text id="name"/>
+                        </div>
+                        <div class="input-box">
+                            <span class="detail">Ngày sinh</span>
+                            <input type=date id="date"/>
+                        </div>
+                        <div class="input-box">
+                            <span class="detail">Địa chỉ</span>
+                            <input type=text id="place" />
+                        </div>
+                        <div class="input-box">
+                            <span class="detail">SĐT</span>
+                            <input type=tel id="phone" maxlength="11"/>
+                        </div>
+                        <div class="input-box">
+                            <span class="detail">CCCD/CMND</span>
+                            <input type=text id="cccd" maxlength="12" minlength="9"/>
+                        </div>
+                        <div class="input-box">
+                            <span class="detail">Giới tính</span>
+                            <div class='sex'>
+                                <input type=radio id="nam" name="sex" value="Nam" checked/>
+                                <label for="nam">Nam</label>
+                                <input type=radio id="nu" name="sex" value="Nữ"/>
+                                <label for="nu">Nữ</label>
+                            </div>
+                        </div>
+                        <div id='buttontable'>
+                            <div class="button-submit"><i class="fas fa-paper-plane"></i><input type=button id="submit" value="Đăng ký"></div>
+                            <div class="button-submit"><i class="fas fa-undo"></i><input type=reset id="reset" value="Nhập lại"></div>
+                        </div>
+                </form>            
+          </div>
+          <div class="content content-3">
+            <div class="title">Nhập thông tin tiêm chủng (Nhân viên y tế)</div>
+            <form>
+                <div>
+                    <label for="cccd">CCCD/CMND: </label>
+                        <input type=text id="_cccd" maxlength="12" minlength="9" />
+                    <label for="selectadd">Vaccine: </label>
+                    <select id=selectadd>
+                        <option value="AstraZeneca">AstraZeneca</option>
+                        <option value="SPUTNIK V">SPUTNIK V</option>
+                        <option value="Vero Cell">Vero Cell</option>
+                        <option value="Pfizer">Pfizer</option>
+                        <option value="Moderna">Moderna</option>
+                        <option value="Janssen">Janssen</option>
+                        <option value="Hayat-Vax">Hayat-Vax</option>
+                        <option value="Abdala">Abdala</option>
+                    </select></br></br>
+                    <div id="statusmetamask"><p>Tình trạng MetaMask: Chưa kết nối</p></div>
+                    </br>
+                        <input type=button id="connectMM" value="Kết nối MetaMask">
+                        <input type=button id="submitadd" value="Xác nhận tiêm">
+                        <input type=reset value="Nhập lại">
+                </div>
+            </form>
+        
+          </div>
+          <div class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <header text-align=center >Thông báo</header>
+              <p id="notification">testing</p>
+            </div>
+        </div>
+        </section>
+      </div>
+</body>
+</html>
