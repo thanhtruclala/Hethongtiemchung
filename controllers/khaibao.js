@@ -59,7 +59,8 @@ module.exports = function(app)
             const findUser = async() => {
                 try {
                     const obj = await congdan.findOne({AddressNV: req.body.AddressNV});
-                    const ngtiem = obj.HoTen
+                    console.log(obj);
+                    const ngtiem = obj?.HoTen
                     res.send(ngtiem);
                 }
                 catch(err)
@@ -102,13 +103,13 @@ module.exports = function(app)
             const findUser = async() => {
                 try {
                     const obj = await congdan.findOne({CCCD: req.body.CCCD});
-                    res.json({status: 'success',obj,Vaccine: {name:req.body.Vaccine, nguoitiem:req.body.User}});
                     if (obj.Vaccine1.name == "Chưa chích"){
-                        await congdan.findOneAndUpdate({CCCD: obj.CCCD,Vaccine1: {name:req.body.Vaccine, nguoitiem:req.body.User}})
+                        await congdan.findOneAndUpdate({CCCD: obj.CCCD},{Vaccine1: {name:req.body.Vaccine, nguoitiem:req.body.User}})
                     }
                     else{
-                        await congdan.findOneAndUpdate({CCCD: obj.CCCD,Vaccine2: {name:req.body.Vaccine, nguoitiem:req.body.User}})
+                        await congdan.findOneAndUpdate({CCCD: obj.CCCD},{Vaccine2: {name:req.body.Vaccine, nguoitiem:req.body.User}})
                     }
+                    res.json({status: 'success',obj,Vaccine: {name:req.body.Vaccine, nguoitiem:req.body.User}});
                 }
                 catch(err)
                 {

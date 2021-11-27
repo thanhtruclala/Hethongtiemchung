@@ -166,10 +166,22 @@ $(document).ready(function() {
         },async function(data){
             if (!data.obj){
                 $("#updatesearch").html('<td colspan="6">Không tìm thấy thông tin công dân</td>');
+                $("#updatesearch1").html('');
+
             }
             else {
                 $("#updatesearch").html('<td>'+data.obj.HoTen+'</td><><td>'+data.obj.NgaySinh+'</td><td>'+data.obj.GioiTinh+'</td><td>'+data.obj.DiaChi+'</td><td>'+data.obj.Vaccine1.name+'</td><td>'+data.obj.Vaccine2.name+'</td></>');
-                $("#updatesearch1").html('<td colspan="4">Người tiêm: </td><td>'+await(tracuuNV(data.obj.Vaccine1.nguoitiem))+'</td><td>'+await(tracuuNV(data.obj.Vaccine1.nguoitiem))+'</td>')
+                if (data.obj.Vaccine1.nguoitiem == "")
+                {
+                    $("#updatesearch1").html('');
+                }
+                else if (data.obj.Vaccine2.nguoitiem == "")
+                {
+                    $("#updatesearch1").html('<td colspan="4">Người tiêm: </td><td>'+await(tracuuNV(data.obj.Vaccine1.nguoitiem))+'</td><td></td>')
+                }
+                else {
+                $("#updatesearch1").html('<td colspan="4">Người tiêm: </td><td>'+await(tracuuNV(data.obj.Vaccine1.nguoitiem))+'</td><td>'+await(tracuuNV(data.obj.Vaccine2.nguoitiem))+'</td>')
+                }
             }
         });
     });
